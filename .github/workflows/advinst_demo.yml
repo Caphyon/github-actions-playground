@@ -7,4 +7,9 @@ jobs:
     steps:
       - name: Use Advinst
         uses: caphyon/advinst-github-action@main
+        with:
+          advinst-version: '19.0'
+          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
+          advinst-enable-com: 'true'
+        
       
