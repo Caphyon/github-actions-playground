@@ -6,5 +6,5 @@ jobs:
     name: Advinst Action Demo
     steps:
       - name: Use Advinst
-        uses: Caphyon/advinst-github-action@latest
+        uses: caphyon/advinst-github-action@main
       
