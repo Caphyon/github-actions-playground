@@ -14,5 +14,5 @@ jobs:
       - name: Use Advinst COM
         shell: pwsh
         run: |
-          $advinst = new-object -com-object AdvancedInstaller
+          $advinst = new-object -comobject AdvancedInstaller
           write-host '$advinst.LicenseInfo'
