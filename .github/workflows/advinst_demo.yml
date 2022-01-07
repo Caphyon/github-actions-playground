@@ -15,4 +15,4 @@ jobs:
         shell: pwsh
         run: |
           $advinst = new-object -comobject AdvancedInstaller
-          write-host '$advinst.LicenseInfo'
+          write-host '$advinst.LicenseInfo.Type'
