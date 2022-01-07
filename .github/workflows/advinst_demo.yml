@@ -11,5 +11,8 @@ jobs:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
           advinst-enable-com: 'true'
-        
-      
+      - name: Use Advinst COM
+        shell: pwsh
+        run: |
+          $advinst = new-object -com-object AdvancedInstaller
+          write-host '$advinst.LicenseInfo'
