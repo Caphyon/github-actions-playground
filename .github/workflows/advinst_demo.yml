@@ -5,13 +5,15 @@ jobs:
     runs-on: windows-latest
     name: Advinst Action Demo
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
       - name: Use Advinst
         uses: caphyon/advinst-github-action@main
         with:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
           advinst-enable-com: 'true'
-          aip-path: simple.aip
+          aip-path: ${{ github.workspace }}\simple.aip
       - name: Use Advinst COM
         shell: pwsh
         run: |
