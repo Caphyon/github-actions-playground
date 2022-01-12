@@ -1,0 +1,19 @@
+name: Build AIPROJ Demo
+on: [workflow_dispatch]
+jobs:
+  aiproj-demo:
+    runs-on: windows-latest
+    name: Build Visual Studio Project (aiproj)
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Deploy Advinst
+        uses: caphyon/advinst-github-action@main
+        with:
+          advinst-version: '19.0'
+          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }} 
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+      - name: Build app for release
+        run: msbuild ${{ github.workspace }}\MyAwesomeApp\MyAwesomeApp.sln
+      
