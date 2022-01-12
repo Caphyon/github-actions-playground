@@ -1,2 +1,1 @@
-# github-actions-playground
-Playground repo for testing GitHUb actions
+This is my demo repository.
