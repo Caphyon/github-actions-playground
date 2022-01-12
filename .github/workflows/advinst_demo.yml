@@ -11,6 +11,7 @@ jobs:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
           advinst-enable-com: 'true'
+          aip-path: simple.aip
       - name: Use Advinst COM
         shell: pwsh
         run: |
