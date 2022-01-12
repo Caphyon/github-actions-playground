@@ -10,7 +10,7 @@ jobs:
         with:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
-          advinst-enable-com: 'true'
+          advinst-enable-automation: 'true'
       - name: Use Advinst Automation
         shell: pwsh
         run: |
