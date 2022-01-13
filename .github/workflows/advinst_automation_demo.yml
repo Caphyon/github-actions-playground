@@ -5,6 +5,8 @@ jobs:
     runs-on: windows-latest
     name: Advinst Automation Demo
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
       - name: Deploy Advinst
         uses: caphyon/advinst-github-action@main
         with:
