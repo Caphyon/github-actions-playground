@@ -16,6 +16,10 @@ jobs:
           aip-build-name: DefaultBuild
           aip-package-name: setup.msi
           aip-output-dir:  ${{ github.workspace }}\setup
+          aip-commands: |
+            SetProperty FOO="foo"
+            SetVersion 1.2.0
+
           
 
       
