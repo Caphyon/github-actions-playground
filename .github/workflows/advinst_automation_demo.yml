@@ -14,6 +14,19 @@ jobs:
       - name: Use Advinst Automation
         shell: pwsh
         run: |
-          $advinst = new-object -comobject AdvancedInstaller
-          write-host '$advinst.LicenseInfo.Type'
+          # Load the AIP project from checkout location 
+          $aipPath = join-path $env:GITHUB_WORKSPACE "simple.aip";
+          Write-Host "AIP: $aipPath";
+
+          $advinst = new-object -com advancedinstaller;
+          $project = $advinst.LoadProject($aipPath);
+          $productDetails = $project.ProductDetails;
+
+          # Bump the ProductVersion
+          $productDetails.Version = "1.2.0";
+          Write-Host "Version: $productDetails.Version";
+
+          # Build the project
+          $project.Build();
+
       
