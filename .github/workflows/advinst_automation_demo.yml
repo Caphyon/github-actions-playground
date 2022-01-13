@@ -3,7 +3,7 @@ on: [workflow_dispatch]
 jobs:
   advinst-com-demo:
     runs-on: windows-latest
-    name: Advinst COM Demo
+    name: Advinst Automation Demo
     steps:
       - name: Deploy Advinst
         uses: caphyon/advinst-github-action@main
