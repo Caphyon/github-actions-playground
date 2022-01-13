@@ -1,0 +1,20 @@
+name: Build AIP Demo
+on: [workflow_dispatch]
+jobs:
+  advinst-com-demo:
+    runs-on: windows-latest
+    name: Build Aip Demo
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Deploy Advinst
+        uses: caphyon/advinst-github-action@main
+        with:
+          advinst-version: '19.0'
+          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
+          aip-path: ${{ github.workspace }}\arhitect.aip
+          aip-package-name: setup.msi
+          aip-output-dir:  ${{ github.workspace }}\setup
+          
+
+      
