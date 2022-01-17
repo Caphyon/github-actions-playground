@@ -1,7 +1,7 @@
-name: Build AIP Demo
+name: Build Advanced Installer Project (.AIP)  Demo
 on: [workflow_dispatch]
 jobs:
-  advinst-com-demo:
+  advinst-aip-build-demo:
     runs-on: windows-latest
     name: Build Aip Demo
     steps:
@@ -12,6 +12,7 @@ jobs:
         with:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
+          advinst-enable-automation: 'true'
           aip-path: ${{ github.workspace }}\arhitect.aip
           aip-build-name: DefaultBuild
           aip-package-name: setup.msi
