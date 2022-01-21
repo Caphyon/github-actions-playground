@@ -23,8 +23,6 @@ jobs:
       - name: Publish setup artifact
         uses: actions/upload-artifact@v2
         with:
-          name: setup.msi
+          name: setup
           path: ${{ github.workspace }}\setup\setup.msi
-          target_path: setup.msi
-          classifier: Setup
 
