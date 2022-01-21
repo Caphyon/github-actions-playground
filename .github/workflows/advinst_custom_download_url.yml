@@ -1,0 +1,10 @@
+name: Custon download URL
+on: [workflow_dispatch]
+jobs:
+  aiproj-demo:
+    runs-on: windows-latest
+    name: Deply Advinst
+    env: 
+      advancedinstaller.url: https://www.advancedinstaller.com/downloads/17.0/advinst.msi
+    steps:
+        uses: caphyon/advinst-github-action@main
