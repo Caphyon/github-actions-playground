@@ -4,22 +4,26 @@ jobs:
   advinst-aip-build-demo:
     runs-on: windows-latest
     name: Sign Setup Demo
-    env:
-      PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }}
     steps:
-      - name: Set envs
-        run: |
-          echo "Pfx path: $env:PFX_PATH"
-
       - name: Check out repository code
         uses: actions/checkout@v2
 
       - name: Create PFX certificate
+        id: create-pfx
+        shell: pwsh
+        env:
+          PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }} 
         run: |
-           echo $env:PFX_CONTENT | base64 --decode > $env:RUNNER_TEMP\cert.pfx
-
+          $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "cert.pfx"; 
+          $encodedBytes = [System.Convert]::FromBase64String($env:PFX_CONTENT); 
+          Set-Content $secretFile -Value $encodedBytes -AsByteStream;
+          $secretFileHash = Get-FileHash $secretFile;
+          Write-Output "::set-output name=PFX_PATH::$secretFile";
+      
       - name: Build and sign AIP
         uses: caphyon/advinst-github-action@v1.0
+        env:
+          PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
         with:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
@@ -28,7 +32,7 @@ jobs:
           aip-package-name: setup.msi
           aip-output-dir:  ${{ github.workspace }}\setup
           aip-commands: |
-            SetDigitalCertificateFile -file "${{ runner.temp }}\cert.pfx"
+            SetDigitalCertificateFile -file "${{ env.PFX_PATH }}"
 
       - name: Publish setup artifact
         uses: actions/upload-artifact@v2
@@ -36,6 +40,9 @@ jobs:
           name: setup
           path: ${{ github.workspace }}\setup\setup.msi
 
-      - name: Delete PFX Certificate
+      - name: Delete PFX certificate
+        shell: pwsh
+        env:
+          PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
         run: |
-          rm "$env:RUNNER_TEMP\cert.pfx"
+          Remove-Item -Path $env:PFX_PATH;
