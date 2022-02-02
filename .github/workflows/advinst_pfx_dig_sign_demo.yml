@@ -4,12 +4,15 @@ jobs:
   advinst-aip-build-demo:
     runs-on: windows-latest
     name: Sign Setup Demo
-    env:
-      PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }}
-      PFX_PATH: ${{ runner.temp }}/certificate.pfx 
     steps:
+      - name: Set envs
+        env:
+          PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }}
+          PFX_PATH: ${{ runner.temp }}/certificate.pfx 
+
       - name: Check out repository code
         uses: actions/checkout@v2
+
       - name: Create PFX certificate
         run: |
            echo "$env:PFX_CONTENT" | base64 --decode > $env:PFX_PATH
@@ -19,8 +22,7 @@ jobs:
         with:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
-          advinst-enable-automation: 'true'
-          aip-path: '${{ github.workspace }}\digital signature.aip'
+          aip-path: ${{ github.workspace }}\digital signature.aip
           aip-build-name: DefaultBuild
           aip-package-name: setup.msi
           aip-output-dir:  ${{ github.workspace }}\setup
