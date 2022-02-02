@@ -16,9 +16,8 @@ jobs:
         run: |
           $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "cert.pfx"; 
           $encodedBytes = [System.Convert]::FromBase64String($env:PFX_CONTENT); 
-          Set-Content $secretFile -Value $encodedBytes -AsByteStream;
-          $secretFileHash = Get-FileHash $secretFile;
-          Write-Output "::set-output name=PFX_PATH::$secretFile";
+          Set-Content $pfxPath -Value $encodedBytes -AsByteStream;
+          Write-Output "::set-output name=PFX_PATH::$pfxPath";
       
       - name: Build and sign AIP
         uses: caphyon/advinst-github-action@v1.0
