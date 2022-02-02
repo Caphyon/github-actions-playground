@@ -4,11 +4,10 @@ jobs:
   advinst-aip-build-demo:
     runs-on: windows-latest
     name: Sign Setup Demo
+    env:
+      PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }}
     steps:
       - name: Set envs
-        env:
-          PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }}
-          PFX_PATH: ${{ runner.temp }}/certificate.pfx 
         run: |
           echo "Pfx path: $env:PFX_PATH"
 
@@ -17,7 +16,7 @@ jobs:
 
       - name: Create PFX certificate
         run: |
-           echo $env:PFX_CONTENT | base64 --decode > $env:PFX_PATH
+           echo $env:PFX_CONTENT | base64 --decode > $env:RUNNER_TEMP\cert.pfx
 
       - name: Build and sign AIP
         uses: caphyon/advinst-github-action@v1.0
@@ -29,7 +28,7 @@ jobs:
           aip-package-name: setup.msi
           aip-output-dir:  ${{ github.workspace }}\setup
           aip-commands: |
-            SetDigitalCertificateFile -file "${{ env.PFX_PATH }}"
+            SetDigitalCertificateFile -file "${{ runner.temp }}\cert.pfx"
 
       - name: Publish setup artifact
         uses: actions/upload-artifact@v2
@@ -39,4 +38,4 @@ jobs:
 
       - name: Delete PFX Certificate
         run: |
-          rm "$env:PFX_PATH"
+          rm "$env:RUNNER_TEMP\cert.pfx"
