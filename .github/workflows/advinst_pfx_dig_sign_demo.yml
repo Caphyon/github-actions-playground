@@ -1,0 +1,37 @@
+name: Build AIP and sign
+on: [workflow_dispatch]
+jobs:
+  advinst-aip-build-demo:
+    runs-on: windows-latest
+    name: Sign Setup Demo
+    env:
+      PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }} 
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Create PFX certificate
+        run: |
+           echo "$env:PFX_CONTENT" | base64 --decode > $env::RUNNER_TEMP/certificate.pfx
+
+      - name: Build and sign AIP
+        uses: caphyon/advinst-github-action@v1.0
+        with:
+          advinst-version: '19.0'
+          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
+          advinst-enable-automation: 'true'
+          aip-path: '${{ github.workspace }}\digital signature.aip'
+          aip-build-name: DefaultBuild
+          aip-package-name: setup.msi
+          aip-output-dir:  ${{ github.workspace }}\setup
+          aip-commands: |
+            SetDigitalCertificateFile -file "${{ runner.temp }}/certificate.pfx"
+
+      - name: Publish setup artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: setup
+          path: ${{ github.workspace }}\setup\setup.msi
+          
+      - name: Delete PFX Certificate
+        run: |
+          rm "${{ runner.temp }}/certificate.pfx"
