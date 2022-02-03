@@ -31,6 +31,7 @@ jobs:
           aip-package-name: setup.msi
           aip-output-dir:  ${{ github.workspace }}\setup
           aip-commands: |
+            SetSig
             SetDigitalCertificateFile -file "${{ env.PFX_PATH }}"
 
       - name: Publish setup artifact
