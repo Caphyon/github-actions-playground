@@ -8,7 +8,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Create PFX certificate
+      - name: Create PFX certificate from BASE64_PFX_CONTENT secret
         id: create-pfx
         shell: pwsh
         env:
