@@ -24,4 +24,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: MyAwesomeApp-Setup
-          path: ${{ github.workspace }}\MyAwesomeApp\AI Setup Project\AI Setup Project-SetupFiles\AI Setup Project.msi
+          path: ${{ github.workspace }}\MyAwesomeApp\MyAwesomeApp Installer\MyAwesomeApp Installer-SetupFiles\MyAwesomeApp Installer.msi 
