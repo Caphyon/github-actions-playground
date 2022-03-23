@@ -1,34 +1,71 @@
-name: Powershell Automation Demo
+name: PowerShell Automation Demo
 on: [workflow_dispatch]
 jobs:
-  advinst-com-demo:
+  powershell-demo:
     runs-on: windows-latest
-    name: Advinst Automation Demo
+    name: Build AIP using PowerShell
+    
     steps:
-      - name: Check out repository code
+      - name: Check out repo
         uses: actions/checkout@v2
-      - name: Deploy Advinst
-        uses: caphyon/advinst-github-action@main
+        
+      - name: Create PFX certificate from BASE64_PFX_CONTENT secret
+        id: create-pfx
+        shell: pwsh
+        env:
+          PFX_CONTENT: ${{ secrets.BASE64_PFX_CONTENT }} 
+        run: |
+          $pfxPath = Join-Path -Path $env:RUNNER_TEMP -ChildPath "cert.pfx"; 
+          $encodedBytes = [System.Convert]::FromBase64String($env:PFX_CONTENT); 
+          Set-Content $pfxPath -Value $encodedBytes -AsByteStream;
+          Write-Output "::set-output name=PFX_PATH::$pfxPath";
+        
+      - name: Deploy latest advinst version
+        uses: caphyon/advinst-github-action@v1.0
         with:
-          advinst-version: '19.0'
-          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
-          advinst-enable-automation: 'true'
-      - name: Use Advinst Automation
+          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }} 
+          advinst-enable-automation: true
+          
+      - name: Build setup using Advinst Powershell Automation
+        env:
+          PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
         shell: pwsh
         run: |
           # Load the AIP project from checkout location 
-          $aipPath = join-path $env:GITHUB_WORKSPACE "simple.aip";
+          $aipPath = join-path $env:GITHUB_WORKSPACE "digital signature.aip";
           Write-Host "AIP: $aipPath";
-
+          
+          # Create a new advinst COM object and load the AIP
           $advinst = new-object -com advancedinstaller;
           $project = $advinst.LoadProject($aipPath);
-          $productDetails = $project.ProductDetails;
-
+          
+          # Set PFX certificate
+          $digSign = $project.DigitalSignature;
+          $digSign.SetUseFileFromDisk($env:PFX_PATH);
+          
           # Bump the ProductVersion
+          $productDetails = $project.ProductDetails;
           $productDetails.Version = "1.2.0";
-          Write-Host "Version: $productDetails.Version";
-
+          
+          # Set the output folder
+          $outputFolder = join-path $env:GITHUB_WORKSPACE "setup";
+          $defaultBuild = $project.BuildComponent.Builds[0];
+          $defaultBuild.OutputFolder = $outputFolder
+          
           # Build the project
           $project.Build();
-
-      
+          
+          
+      - name: Publish setup artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: setup-msi
+          path: ${{ github.workspace }}\setup\demo.msi
+          
+          
+      - name: Delete PFX certificate
+        shell: pwsh
+        env:
+          PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
+        run: |
+          Remove-Item -Path $env:PFX_PATH;
