@@ -4,16 +4,24 @@ jobs:
   aiproj-demo:
     runs-on: windows-latest
     name: Build Visual Studio Project (aiproj)
+    
     steps:
-      - name: Check out repository code
+      - name: Check out repo
         uses: actions/checkout@v2
-      - name: Deploy Advinst
-        uses: caphyon/advinst-github-action@main
+        
+      - name: Deploy latest advinst version
+        uses: caphyon/advinst-github-action@v1.0
         with:
-          advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }} 
+          
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
-      - name: Build app for release
-        run: msbuild ${{ github.workspace }}\MyAwesomeApp\MyAwesomeApp.sln
       
+      - name: Build app
+        run: msbuild ${{ github.workspace }}\MyAwesomeApp\MyAwesomeApp.sln
+        
+      - name: Publish setup artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: MyAwesomeApp-Setup
+          path: ${{ github.workspace }}\MyAwesomeApp\AI Setup Project\AI Setup Project-SetupFiles\AI Setup Project.msi
