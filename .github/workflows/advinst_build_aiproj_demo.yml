@@ -1,4 +1,4 @@
-name: Build AIPROJ Demo
+name: Build Advanced INstaller Visual Studio Project (AIPROJ)
 on: [workflow_dispatch]
 jobs:
   aiproj-demo:

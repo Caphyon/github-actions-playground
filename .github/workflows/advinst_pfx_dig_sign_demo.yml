@@ -1,4 +1,4 @@
-name: Build AIP and sign
+name: Build AIP and sign using a PFX certificate stored in Secrets
 on: [workflow_dispatch]
 jobs:
   advinst-aip-build-demo:

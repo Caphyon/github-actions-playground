@@ -1,4 +1,4 @@
-name: Build Advanced Installer Project (.AIP)  Demo
+name: Build Advanced Installer Project (.AIP)
 on: [workflow_dispatch]
 jobs:
   advinst-aip-build-demo:

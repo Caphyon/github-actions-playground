@@ -1,4 +1,4 @@
-name: Custonm download URL
+name: Download Advanced Installer Tool from a custom URL
 on: [workflow_dispatch]
 jobs:
   aiproj-demo:
