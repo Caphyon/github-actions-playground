@@ -8,7 +8,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Build AIP
-        uses: caphyon/advinst-github-action@v1.0
+        uses: caphyon/advinst-github-action@main
         with:
           advinst-version: '19.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}

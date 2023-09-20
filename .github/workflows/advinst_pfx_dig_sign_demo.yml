@@ -20,7 +20,7 @@ jobs:
           Write-Output "::set-output name=PFX_PATH::$pfxPath";
       
       - name: Build and sign AIP
-        uses: caphyon/advinst-github-action@v1.0
+        uses: caphyon/advinst-github-action@main
         env:
           PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
         with:

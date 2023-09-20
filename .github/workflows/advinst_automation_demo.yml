@@ -21,7 +21,7 @@ jobs:
           Write-Output "::set-output name=PFX_PATH::$pfxPath";
         
       - name: Deploy latest advinst version
-        uses: caphyon/advinst-github-action@v1.0
+        uses: caphyon/advinst-github-action@main
         with:
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }} 
           advinst-enable-automation: true

@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Build and sign AIP
-        uses: caphyon/advinst-github-action@v1.0
+        uses: caphyon/advinst-github-action@main
         with:
           advinst-version: '20.1'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
