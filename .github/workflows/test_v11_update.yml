@@ -20,7 +20,6 @@ jobs:
           aip-commands: |
             SetProperty FOO="foo"
             SetVersion 1.2.0
-                name: Test v1.1 version
       - name: Build AIP with valid advinst version
         uses: caphyon/advinst-github-action@deprecation-warning
         with:
@@ -33,7 +32,6 @@ jobs:
           aip-commands: |
             SetProperty FOO="foo"
             SetVersion 1.2.0
-                name: Test v1.1 version
         
 
 
