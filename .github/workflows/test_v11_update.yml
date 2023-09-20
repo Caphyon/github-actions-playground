@@ -8,7 +8,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - name: Build AIP with deprecated advinst version
-        uses: caphyon/advinst-github-action@deprecation-warning
+        uses: caphyon/advinst-github-action@latest
         with:
           advinst-version: '16.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
