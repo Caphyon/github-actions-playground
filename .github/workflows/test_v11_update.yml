@@ -3,11 +3,11 @@ on: [workflow_dispatch]
 jobs:
   advinst-aip-build-demo:
     runs-on: windows-latest
-    name: Build Aip Demo
+    name: Test v1.1 version
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Build AIP
+      - name: Build AIP with deprecated advinst version
         uses: caphyon/advinst-github-action@deprecation-warning
         with:
           advinst-version: '16.0'
@@ -16,13 +16,24 @@ jobs:
           aip-path: ${{ github.workspace }}\arhitect.aip
           aip-build-name: DefaultBuild
           aip-package-name: setup.msi
-          aip-output-dir:  ${{ github.workspace }}\setup
+          aip-output-dir:  ${{ github.workspace }}\setup-arh
           aip-commands: |
             SetProperty FOO="foo"
             SetVersion 1.2.0
-      - name: Publish setup artifact
-        uses: actions/upload-artifact@v2
+                name: Test v1.1 version
+      - name: Build AIP with valid advinst version
+        uses: caphyon/advinst-github-action@deprecation-warning
         with:
-          name: setup
-          path: ${{ github.workspace }}\setup\setup.msi
+          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
+          advinst-enable-automation: 'false'
+          aip-path: ${{ github.workspace }}\enterprise.aip
+          aip-build-name: DefaultBuild
+          aip-package-name: setup.msi
+          aip-output-dir:  ${{ github.workspace }}\setup-ent
+          aip-commands: |
+            SetProperty FOO="foo"
+            SetVersion 1.2.0
+                name: Test v1.1 version
+        
+
 
