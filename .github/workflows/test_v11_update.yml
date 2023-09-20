@@ -12,7 +12,7 @@ jobs:
         with:
           advinst-version: '16.0'
           advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
-          advinst-enable-automation: 'true'
+          advinst-enable-automation: 'false'
           aip-path: ${{ github.workspace }}\arhitect.aip
           aip-build-name: DefaultBuild
           aip-package-name: setup.msi
